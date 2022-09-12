@@ -1,0 +1,135 @@
+C51 COMPILER V9.60.0.0   1BY19EC066                                                        09/12/2022 18:05:25 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE 1BY19EC066
+OBJECT MODULE PLACED IN .\Objects\1BY19EC066.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE 1BY19EC066.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -s\1BY19EC066.lst) TABS(2) OBJECT(.\Objects\1BY19EC066.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          
+   3          /********************************************* LCD control signals declaration ***************************
+             -************************/
+   4           
+   5          sbit RS = P0^0;     //
+   6          sbit RW = P0^1;  // Read/write line
+   7          sbit Enable = P0^2; // Enable line
+   8          #define LCD_PORT P2 // define port
+   9           
+  10          /********************************************* LCD function prototypes ***********************************
+             -*************/
+  11          void send_cmd(unsigned char);
+  12          void send_char(unsigned char);
+  13          void LCD_init(void);
+  14          void delayms(unsigned int);
+  15          /********************************************* Main Funciton declaration *********************************
+             -**************/
+  16          void main()
+  17          {
+  18   1      
+  19   1      LCD_PORT = 0x00; // Make the port as output port
+  20   1         
+  21   1      LCD_init();            // LCD initialization
+  22   1        
+  23   1      // while(1)
+  24   1       //{
+  25   1        send_cmd(0x83);     // Force cursor to beginning of 1st line, if the number is 0x83 then force the curso
+             -r to 53rd position
+  26   1        delayms(10);    // Delay of 100millisec
+  27   1        send_char('1');  // Send data 
+  28   1        send_char('B');  // Send data 
+  29   1        send_char('Y');  // Send data 
+  30   1        send_char('1');  // Send data 
+  31   1        send_char('9');  // Send data 
+  32   1        send_char('E');  // Send data 
+  33   1        send_char('C');  // Send data 
+  34   1        send_char('0');  // Send data 
+  35   1        send_char('6');  // Send data 
+  36   1        send_char('6');  // Send data  
+  37   1        send_cmd(0xC3);     // Force cursor to beginning of 2nd line
+  38   1         delayms(10);    // Delay of 100millisec 
+  39   1        send_char('J');  // Send data 
+  40   1        send_char('A');  // Send data 
+  41   1        send_char('S');  // Send data 
+  42   1        send_char('W');  // Send data 
+  43   1        send_char('A');  // Send data
+  44   1        send_char('N');  // Send data
+  45   1        send_char('T');  // Send data
+  46   1        send_char('H');  // Send data
+  47   1        send_char(' ');  // Send data
+  48   1        send_char('S');  // Send data                   
+  49   1       //}
+  50   1      }
+C51 COMPILER V9.60.0.0   1BY19EC066                                                        09/12/2022 18:05:25 PAGE 2   
+
+  51           
+  52           
+  53          /********************************************* LCD Initialization Function declaration *******************
+             -*************/
+  54           
+  55          void LCD_init()
+  56          {
+  57   1       send_cmd(0x38);      // configuring LCD as 2 line 5x7 matrix
+  58   1       send_cmd(0x0E);      // Display on, Cursor blinking
+  59   1       send_cmd(0x01);      // Clear Display Screen
+  60   1       send_cmd(0x06);      // Increment Cursor (Right side)
+  61   1      }
+  62           
+  63          void send_char(unsigned char character)
+  64          {
+  65   1       LCD_PORT = character;
+  66   1       RS = 1;    // Select Data Register
+  67   1       RW = 0;    // write operation
+  68   1       Enable = 1;      // High to Low pulse provided on the enable pin with nearly 1ms(>450ns)
+  69   1       delayms(1);   // 1 millisec delay
+  70   1       Enable = 0;
+  71   1       delayms(10);   // 100 millisec delay
+  72   1      }
+  73           
+  74           
+  75          /*********************************************LCD Command Sending Function declaration********************
+             -************/
+  76           
+  77          void send_cmd(unsigned char Command)
+  78          {
+  79   1       LCD_PORT = Command;
+  80   1       RS = 0;      // Select Command Register
+  81   1       RW = 0;    // write operation
+  82   1       Enable = 1;      // High to Low pulse provided on the enable pin with nearly 1ms(>450ns)
+  83   1       delayms(1);   // 1 millisec delay
+  84   1       Enable = 0;
+  85   1      }
+  86           
+  87          
+  88           
+  89          /******************************************* delayms Function declaration*********************************
+             -**************/
+  90          void delayms(unsigned int val)
+  91          {
+  92   1       unsigned int i,j;
+  93   1         
+  94   1       for(i=0;i<=val;i++)
+  95   1       {
+  96   2        for(j=0;j<=2;j++)  ;
+  97   2        //_nop_();   // no operation produce 1us time delay
+  98   2       }
+  99   1        
+ 100   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    216    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.0.0   1BY19EC066                                                        09/12/2022 18:05:25 PAGE 3   
+
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

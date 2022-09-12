@@ -1,0 +1,3 @@
+".\Objects\1BY19EC066.obj" 
+TO ".\Objects\lcd_code" 
+PRINT(".\Listings\lcd_code.m51")
